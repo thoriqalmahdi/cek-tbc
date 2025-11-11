@@ -69,6 +69,8 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### ℹ️ Info Model")
     st.caption("• Ekstraktor: **VGG16 (ImageNet, GAP)**\n\n• Klasifier: **SVM**\n\n• Preprocess: **StandardScaler**")
+    st.markdown("### ℹ️ Kelompok 5 SK5002")
+    st.caption("Dara Darul N.H.\n\nThoriq A.M.\n\nIrfa Anisa P.\n\nNurul H.")
     st.markdown("---")
     st.markdown("Made with ❤️ Streamlit")
 
