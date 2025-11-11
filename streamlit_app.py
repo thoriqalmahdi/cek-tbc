@@ -136,7 +136,7 @@ with right:
             st.markdown("<div class='card'>", unsafe_allow_html=True)
             st.markdown("**Prediksi**")
             st.markdown(f"<div class='pred-label'>{pred_name}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div class='subtle'>Index: {pred_idx}</div>", unsafe_allow_html=True)
+            #st.markdown(f"<div class='subtle'>Index: {pred_idx}</div>", unsafe_allow_html=True)
             st.markdown("<hr/>", unsafe_allow_html=True)
 
             if probs is not None:
