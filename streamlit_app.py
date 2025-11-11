@@ -3,7 +3,6 @@ import os, json, tempfile, numpy as np, joblib
 import streamlit as st
 from PIL import Image
 import pandas as pd
-
 from feature_extractor_vgg16 import build_vgg16_extractor, extract_features
 
 # -----------------------------
@@ -13,9 +12,7 @@ st.set_page_config(page_title="Klasifikasi CXR (VGG16 + SVM)", page_icon="🩺",
 
 CUSTOM_CSS = """
 <style>
-/* center main column a bit */
 .main .block-container {padding-top: 1.5rem; padding-bottom: 2rem; max-width: 1100px;}
-/* pretty cards */
 .card {
   background: #ffffff;
   border: 1px solid rgba(0,0,0,.06);
@@ -54,7 +51,6 @@ def load_models():
 
 svm_model, scaler, vgg_model = load_models()
 
-# class names
 DEFAULT_CLASSES = ["Normal", "Pneumonia", "Tuberkulosis"]
 if os.path.exists("class_names.json"):
     try:
@@ -70,7 +66,6 @@ else:
 with st.sidebar:
     st.markdown("## ⚙️ Pengaturan")
     show_probs = st.toggle("Tampilkan probabilitas", value=True)
-    conf_warn = st.slider("Peringatan jika probabilitas tertinggi < ", 0.0, 1.0, 0.60, 0.05)
     st.markdown("---")
     st.markdown("### ℹ️ Info Model")
     st.caption("• Ekstraktor: **VGG16 (ImageNet, GAP)**\n\n• Klasifier: **SVM**\n\n• Preprocess: **StandardScaler**")
@@ -148,24 +143,19 @@ with right:
                     "Probabilitas": probs
                 }).sort_values("Probabilitas", ascending=False).reset_index(drop=True)
 
-                top_p = float(df.loc[0, "Probabilitas"])
-                if top_p < conf_warn:
-                    st.warning(f"Keyakinan model rendah (p={top_p:.3f} < {conf_warn:.2f}). Pertimbangkan verifikasi manual.")
-
                 colA, colB = st.columns([4, 5])
                 with colA:
                     st.dataframe(df.style.format({"Probabilitas": "{:.4f}"}), use_container_width=True, hide_index=True)
                 with colB:
                     st.bar_chart(df.set_index("Kelas"))
 
-            # Detail teknis (expandable)
+            # Detail teknis
             with st.expander("Detail teknis"):
                 st.write(f"- Panjang vektor fitur: **{len(feats)}**")
                 st.write("- Preprocess: **StandardScaler** dari data latih")
                 st.write("- Ekstraktor: **VGG16 include_top=False, GlobalAveragePooling2D**")
             st.markdown("</div>", unsafe_allow_html=True)
 
-        # Clean temp
         try:
             os.remove(tmp_path)
         except Exception:
